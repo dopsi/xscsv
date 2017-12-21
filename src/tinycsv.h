@@ -70,6 +70,18 @@ size_t tinycsv_columns(tinycsv_document_t *doc);
 const char* tinycsv_get_content(tinycsv_document_t *doc, size_t x, size_t y);
 
 /**
+ * @brief Insert content into a @ref tinycsv_document_t
+ *
+ * @param doc the document
+ * @param x the horizontal coordinate of the cell
+ * @param y the vertical coordinate of the cell
+ * @param new_content new content to be written
+ *
+ * @return a pointer to the new content, NULL otherwise
+ */
+const char* tinycsv_set_content(tinycsv_document_t *doc, size_t x, size_t y, const char *new_content);
+
+/**
  * @brief Destroy a @ref tinycsv_document_t object
  *
  * @param doc a @ref tinycsv_document_t

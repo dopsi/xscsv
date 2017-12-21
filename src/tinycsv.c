@@ -146,6 +146,51 @@ const char* tinycsv_get_content(tinycsv_document_t *doc, size_t x, size_t y) {
     return NULL;
 }
 
+const char* tinycsv_set_content(tinycsv_document_t *doc, size_t x, size_t y, const char *new_content) {
+    if (!doc || !new_content) {
+        return NULL;
+    }
+
+    if (y >= doc->lines) {
+        struct line_content **new_lines_array = NULL;
+        new_lines_array = realloc(doc->lines_array, (y+1)*sizeof(struct line_content*));
+        if (!new_lines_array) {
+            return NULL;
+        }
+
+        doc->lines_array = new_lines_array;
+    }
+
+    if (! doc->lines_array[y] ) {
+        doc->lines_array[y] = malloc(sizeof(struct line_content));
+        doc->lines_array[y]->len = 0;
+        doc->lines_array[y]->elements = NULL;
+    }
+
+    if (x >= doc->lines_array[y]->len) {
+        // TODO add cells
+        char **new_elements = NULL;
+        new_elements = realloc(doc->lines_array[y]->elements, (x+1)*sizeof(char*));
+
+        if (!new_elements) {
+            return NULL;
+        }
+
+        doc->lines_array[y]->elements = new_elements;
+    }
+    size_t new_content_len = strlen(new_content);
+
+    if (doc->lines_array[y]->elements[x]) {
+        free(doc->lines_array[y]->elements[x]);
+        doc->lines_array[y]->elements[x] = NULL;
+    }
+
+    doc->lines_array[y]->elements[x] = calloc(new_content_len+1, sizeof(char));
+    strcpy(doc->lines_array[y]->elements[x], new_content);
+
+    return doc->lines_array[y]->elements[x];
+}
+
 void tinycsv_close(tinycsv_document_t *doc) {
     if (! doc ) {
         return;
