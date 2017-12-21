@@ -66,6 +66,10 @@ static struct line_content* process_line(char *raw_line) {
 }
 
 tinycsv_document_t* tinycsv_open(const char *filename) {
+    if (!filename) {
+        return NULL;
+    }
+
     tinycsv_document_t *doc = NULL;
     FILE *f = NULL;
     f = fopen(filename, "r");
@@ -76,6 +80,10 @@ tinycsv_document_t* tinycsv_open(const char *filename) {
 }
 
 tinycsv_document_t* tinycsv_read(FILE *file) {
+    if (!file) {
+        return NULL;
+    }
+
     tinycsv_document_t *doc = malloc(sizeof(tinycsv_document_t));
 
     struct line_content **new_lines_array = NULL;
