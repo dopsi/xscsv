@@ -28,11 +28,17 @@ add_executable(tinycsv_info_print
 add_executable(tinycsv_print_as_csv
     examples/print_as_csv.c)
 
+add_executable(tinycsv_replace_content
+    examples/replace_content.c)
+
 # Linking
 target_link_libraries(tinycsv_info_print
     tinycsv)
 
 target_link_libraries(tinycsv_print_as_csv
+    tinycsv)
+
+target_link_libraries(tinycsv_replace_content
     tinycsv)
 
 # Install
