@@ -35,6 +35,13 @@ tinycsv_document_t* tinycsv_open(const char *filename);
 tinycsv_document_t* tinycsv_read(FILE *file);
 
 /**
+ * @brief Create a new empty
+ *
+ * @return a @ref tinycsv_document_t pointer, NULL on failure
+ **/
+tinycsv_document_t* tinycsv_new(void);
+
+/**
  * @brief Obtain the number of lines in the document
  *
  * @param doc a @ref tinycsv_document_t pointer

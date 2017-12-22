@@ -84,19 +84,14 @@ tinycsv_document_t* tinycsv_read(FILE *file) {
         return NULL;
     }
 
-    tinycsv_document_t *doc = malloc(sizeof(tinycsv_document_t));
-
-    struct line_content **new_lines_array = NULL;
-    char line_buffer[TINYCSV_INTERNAL_BUFFER] = { '\0' };
-
+    tinycsv_document_t *doc = tinycsv_new();
 
     if (!doc) {
         return NULL;
     }
 
-    doc->lines = 0;
-    doc->columns = 0;
-    doc->lines_array = NULL;
+    struct line_content **new_lines_array = NULL;
+    char line_buffer[TINYCSV_INTERNAL_BUFFER] = { '\0' };
 
     while (fgets(line_buffer, TINYCSV_INTERNAL_BUFFER, file)) {
         new_lines_array = realloc(doc->lines_array, (doc->lines+1) * sizeof(struct line_content));
@@ -115,6 +110,20 @@ tinycsv_document_t* tinycsv_read(FILE *file) {
         
         doc->lines++;
     }
+
+    return doc;
+}
+
+tinycsv_document_t* tinycsv_new(void) {
+    tinycsv_document_t *doc = malloc(sizeof(tinycsv_document_t));
+
+    if (!doc) {
+        return NULL;
+    }
+
+    doc->lines = 0;
+    doc->columns = 0;
+    doc->lines_array = NULL;
 
     return doc;
 }
@@ -139,6 +148,7 @@ const char* tinycsv_get_content(tinycsv_document_t *doc, size_t x, size_t y) {
     if (!doc) {
         return NULL;
     }
+
     if (y < doc->lines && doc->lines_array[y] && x < doc->lines_array[y]->len) {
         return doc->lines_array[y]->elements[x];
     }
@@ -159,6 +169,13 @@ const char* tinycsv_set_content(tinycsv_document_t *doc, size_t x, size_t y, con
         }
 
         doc->lines_array = new_lines_array;
+
+        size_t i;
+        for (i = doc->lines; i < y+1; ++i) {
+            doc->lines_array[i] = NULL;
+        }
+
+        doc->lines = y+1;
     }
 
     if (! doc->lines_array[y] ) {
@@ -177,6 +194,15 @@ const char* tinycsv_set_content(tinycsv_document_t *doc, size_t x, size_t y, con
         }
 
         doc->lines_array[y]->elements = new_elements;
+        size_t i;
+        for (i = doc->lines_array[y]->len; i < x+1; ++i) {
+            doc->lines_array[y]->elements[i] = NULL;
+        }
+
+        doc->lines_array[y]->len = x+1;
+        if (doc->columns < x+1) {
+            doc->columns = x+1;
+        }
     }
     size_t new_content_len = strlen(new_content);
 
