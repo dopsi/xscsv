@@ -144,6 +144,18 @@ size_t tinycsv_columns(tinycsv_document_t *doc) {
     }
 }
 
+size_t tinycsv_columns_in_line(tinycsv_document_t *doc, size_t line) {
+    if (!doc) {
+        return 0;
+    }
+
+    if (line < doc->lines && doc->lines_array[line]) {
+        return doc->lines_array[line]->len;
+    }
+
+    return 0;
+}
+
 const char* tinycsv_get_content(tinycsv_document_t *doc, size_t x, size_t y) {
     if (!doc) {
         return NULL;

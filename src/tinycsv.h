@@ -60,6 +60,16 @@ size_t tinycsv_lines(tinycsv_document_t *doc);
 size_t tinycsv_columns(tinycsv_document_t *doc);
 
 /**
+ * @brief Get the number of columns in a given line
+ *
+ * @param doc a @ref tinycsv_document_t pointer
+ * @param line the queried line
+ *
+ * @return the number of elements in the line, 0 in case of error
+ */
+size_t tinycsv_columns_in_line(tinycsv_document_t *doc, size_t line);
+
+/**
  * @brief Get the document cell content
  *
  * @param doc a @ref tinycsv_document_t pointer
