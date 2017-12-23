@@ -15,6 +15,7 @@ int main(int argc, char **argv) {
     printf("Document data\n");
     printf("  ->lines = %u\n", tinycsv_lines(doc));
     printf("  ->columns = %u\n", tinycsv_columns(doc));
+    printf("  ->columns_in_1st_line = %u\n", tinycsv_columns_in_line(doc, 0));
     tinycsv_close(doc);
 
     return 0;

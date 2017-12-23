@@ -23,7 +23,23 @@ If you already have a `FILE*` pointer, this file can be read with
 tinycsv_document_t *doc = tinycsv_read(file_pointer);
 ```
 
-From this point, both pointer a functionnaly equals.
+To create an empty document, use @ref tinycsv_new.
+
+```c
+tinycsv_document_t *doc = tinycsv_new();
+```
+
+From this point, all three pointers are functionnaly equal.
+
+To access document properties, use @ref tinycsv_lines,
+@ref tinycsv_columns or @tinycsv_columns_in_line.
+
+```c
+size_t lines_in_document = tinycsv_lines(doc);
+size_t max_columns_in_document = tinycsv_columns(doc);
+size_t columns_in_first_line = tinycsv_columns_in_line(doc, 0);
+```
+
 
 To close the document properly, @ref tinycsv_close is used
 
