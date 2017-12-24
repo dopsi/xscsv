@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #define TINYCSV_INTERNAL_BUFFER 1024
 
@@ -27,6 +28,31 @@ static size_t _strcharcount(const char *str, char c) {
         }
     }
     return cnt;
+}
+
+// Source: https://stackoverflow.com/questions/122616/
+// Note: This function returns a pointer to a substring of the original string.
+// If the given string was allocated dynamically, the caller must not overwrite
+// that pointer with the returned value, since the original pointer must be
+// deallocated using the same allocator with which it was allocated.  The return
+// value must NOT be deallocated using free() etc.
+static char *trimwhitespace(char *str) {
+    char *end;
+
+    // Trim leading space
+    while(isspace((unsigned char)*str)) str++;
+
+    if(*str == 0)    // All spaces?
+        return str;
+
+    // Trim trailing space
+    end = str + strlen(str) - 1;
+    while(end > str && isspace((unsigned char)*end)) end--;
+
+    // Write new null terminator
+    *(end+1) = 0;
+
+    return str;
 }
 
 static struct line_content* process_line(char *raw_line, char separator) {
@@ -54,11 +80,12 @@ static struct line_content* process_line(char *raw_line, char separator) {
     pch = strtok(raw_line, sep);
 
     while (pch != NULL) {
+        //if (pch[pch_len-1] == '\n') {
+        //    pch[pch_len-1] = '\0';
+        //    pch_len--;
+        //}
+        pch = trimwhitespace(pch);
         pch_len = strlen(pch);
-        if (pch[pch_len-1] == '\n') {
-            pch[pch_len-1] = '\0';
-            pch_len--;
-        }
 
         l->elements[cnt] = calloc(pch_len+1, sizeof(char));
         strcpy(l->elements[cnt], pch);
