@@ -9,7 +9,7 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    tinycsv_document_t *doc = tinycsv_open(argv[1], 0x0);
+    tinycsv_document_t *doc = tinycsv_open(argv[1], '\t');
     // TODO check for valid document
 
     printf("Document data\n");

@@ -9,7 +9,7 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    tinycsv_document_t *doc = tinycsv_open(argv[1]);
+    tinycsv_document_t *doc = tinycsv_open(argv[1], ',');
     
     // TODO check for valid document
 
@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
 
     for (y = 0; y < max_y; ++y) {
         for (x = 0; x < max_x; ++x) {
-            printf("%s,", tinycsv_get_content(doc, x, y));
+            printf("%s,", tinycsv_get_content(doc, y, x));
         }
         printf("\n");
     }
@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
 
     for (y = 0; y < max_y; ++y) {
         for (x = 0; x < max_x; ++x) {
-            printf("%s,", tinycsv_get_content(doc, x, y));
+            printf("%s,", tinycsv_get_content(doc, y, x));
         }
         printf("\n");
     }
