@@ -104,6 +104,9 @@ tinycsv_document_t* tinycsv_open(const char *filename, char separator) {
     tinycsv_document_t *doc = NULL;
     FILE *f = NULL;
     f = fopen(filename, "r");
+    if (!f) {
+        return NULL;
+    }
     doc = tinycsv_read(f, separator);
     fclose(f);
 
