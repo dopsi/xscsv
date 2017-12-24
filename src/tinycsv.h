@@ -16,30 +16,34 @@ typedef struct tinycsv_document tinycsv_document_t;
  * @brief Open a file giving it's filename
  *
  * @param filename Name of the file to be opened
+ * @param separator Field separator
  *
  * If filename is NULL, the returned document will be a NULL-pointer.
  *
  * @return a @ref tinycsv_document_t pointer, NULL on failure
  **/
-tinycsv_document_t* tinycsv_open(const char *filename);
+tinycsv_document_t* tinycsv_open(const char *filename, char separator);
 
 /**
  * @brief Read a file from a FILE pointer
  *
  * @param file FILE pointer
+ * @param separator Field separator
  *
  * If file is NULL, the returned document will be a NULL-pointer.
  *
  * @return a @ref tinycsv_document_t pointer, NULL on failure
  **/
-tinycsv_document_t* tinycsv_read(FILE *file);
+tinycsv_document_t* tinycsv_read(FILE *file, char separator);
 
 /**
- * @brief Create a new empty
+ * @brief Create a new empty @ref tinycsv_document_t
+ *
+ * @param separator Field separator
  *
  * @return a @ref tinycsv_document_t pointer, NULL on failure
  **/
-tinycsv_document_t* tinycsv_new(void);
+tinycsv_document_t* tinycsv_new(char separator);
 
 /**
  * @brief Obtain the number of lines in the document
@@ -84,7 +88,7 @@ size_t tinycsv_columns_in_line(tinycsv_document_t *doc, size_t line);
  *
  * @return a pointer on the content, NULL in case of failure
  */
-const char* tinycsv_get_content(tinycsv_document_t *doc, size_t x, size_t y);
+const char* tinycsv_get_content(tinycsv_document_t *doc, size_t y, size_t x);
 
 /**
  * @brief Insert content into a @ref tinycsv_document_t
@@ -96,7 +100,7 @@ const char* tinycsv_get_content(tinycsv_document_t *doc, size_t x, size_t y);
  *
  * @return a pointer to the new content, NULL otherwise
  */
-const char* tinycsv_set_content(tinycsv_document_t *doc, size_t x, size_t y, const char *new_content);
+const char* tinycsv_set_content(tinycsv_document_t *doc, size_t y, size_t x, const char *new_content);
 
 /**
  * @brief Destroy a @ref tinycsv_document_t object

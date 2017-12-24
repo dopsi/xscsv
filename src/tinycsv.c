@@ -15,6 +15,7 @@ struct tinycsv_document {
     size_t lines;
     size_t columns;
     struct line_content **lines_array;
+    char separator;
 };
 
 static size_t _strcharcount(const char *str, char c) {
@@ -28,7 +29,7 @@ static size_t _strcharcount(const char *str, char c) {
     return cnt;
 }
 
-static struct line_content* process_line(char *raw_line) {
+static struct line_content* process_line(char *raw_line, char separator) {
     size_t cnt = 0;
     size_t pch_len;
     char *pch = NULL;
@@ -39,7 +40,10 @@ static struct line_content* process_line(char *raw_line) {
         return NULL;
     }
 
-    l->len = _strcharcount(raw_line, ',') + 1;
+    char sep[2];
+    sprintf(sep, "%c", separator);
+
+    l->len = _strcharcount(raw_line, separator) + 1;
     l->elements = calloc(l->len, sizeof(char*));
     
     if (!l->elements) {
@@ -47,7 +51,7 @@ static struct line_content* process_line(char *raw_line) {
         return NULL;
     }
 
-    pch = strtok(raw_line, ",");
+    pch = strtok(raw_line, sep);
 
     while (pch != NULL) {
         pch_len = strlen(pch);
@@ -59,13 +63,13 @@ static struct line_content* process_line(char *raw_line) {
         l->elements[cnt] = calloc(pch_len+1, sizeof(char));
         strcpy(l->elements[cnt], pch);
         cnt ++;
-        pch = strtok (NULL, ",");
+        pch = strtok (NULL, sep);
     }
 
     return l;
 }
 
-tinycsv_document_t* tinycsv_open(const char *filename) {
+tinycsv_document_t* tinycsv_open(const char *filename, char separator) {
     if (!filename) {
         return NULL;
     }
@@ -73,18 +77,18 @@ tinycsv_document_t* tinycsv_open(const char *filename) {
     tinycsv_document_t *doc = NULL;
     FILE *f = NULL;
     f = fopen(filename, "r");
-    doc = tinycsv_read(f);
+    doc = tinycsv_read(f, separator);
     fclose(f);
 
     return doc;
 }
 
-tinycsv_document_t* tinycsv_read(FILE *file) {
+tinycsv_document_t* tinycsv_read(FILE *file, char separator) {
     if (!file) {
         return NULL;
     }
 
-    tinycsv_document_t *doc = tinycsv_new();
+    tinycsv_document_t *doc = tinycsv_new(separator);
 
     if (!doc) {
         return NULL;
@@ -102,7 +106,7 @@ tinycsv_document_t* tinycsv_read(FILE *file) {
         }
         
         doc->lines_array = new_lines_array;
-        doc->lines_array[doc->lines] = process_line(line_buffer);
+        doc->lines_array[doc->lines] = process_line(line_buffer, doc->separator);
 
         if (doc->lines_array[doc->lines]->len > doc->columns) {
             doc->columns = doc->lines_array[doc->lines]->len;
@@ -114,7 +118,7 @@ tinycsv_document_t* tinycsv_read(FILE *file) {
     return doc;
 }
 
-tinycsv_document_t* tinycsv_new(void) {
+tinycsv_document_t* tinycsv_new(char separator) {
     tinycsv_document_t *doc = malloc(sizeof(tinycsv_document_t));
 
     if (!doc) {
@@ -124,6 +128,12 @@ tinycsv_document_t* tinycsv_new(void) {
     doc->lines = 0;
     doc->columns = 0;
     doc->lines_array = NULL;
+
+    if (!separator) {
+            doc->separator = ',';
+    } else {
+            doc->separator = separator;
+    }
 
     return doc;
 }
@@ -156,7 +166,7 @@ size_t tinycsv_columns_in_line(tinycsv_document_t *doc, size_t line) {
     return 0;
 }
 
-const char* tinycsv_get_content(tinycsv_document_t *doc, size_t x, size_t y) {
+const char* tinycsv_get_content(tinycsv_document_t *doc, size_t y, size_t x) {
     if (!doc) {
         return NULL;
     }
@@ -168,7 +178,7 @@ const char* tinycsv_get_content(tinycsv_document_t *doc, size_t x, size_t y) {
     return NULL;
 }
 
-const char* tinycsv_set_content(tinycsv_document_t *doc, size_t x, size_t y, const char *new_content) {
+const char* tinycsv_set_content(tinycsv_document_t *doc, size_t y, size_t x, const char *new_content) {
     if (!doc || !new_content) {
         return NULL;
     }
