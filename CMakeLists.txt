@@ -25,6 +25,9 @@ add_library(tinycsv STATIC
 add_executable(tinycsv_info_print
     examples/info_print.c)
 
+add_executable(tinycsv_info_print_tab
+    examples/info_print_tab.c)
+
 add_executable(tinycsv_print_as_csv
     examples/print_as_csv.c)
 
@@ -34,8 +37,37 @@ add_executable(tinycsv_replace_content
 add_executable(tinycsv_new_document
     examples/new_document.c)
 
+## Test executables
+
+add_executable(tcsv_test_lines
+    tests/test_lines.c)
+
+add_executable(tcsv_test_columns
+    tests/test_columns.c)
+
+add_executable(tcsv_test_columns_in_line
+    tests/test_columns_in_line.c)
+
+add_executable(tcsv_test_get_contents
+    tests/test_get_contents.c)
+
+add_executable(tcsv_test_tab_lines
+    tests/test_tab_lines.c)
+
+add_executable(tcsv_test_tab_columns
+    tests/test_tab_columns.c)
+
+add_executable(tcsv_test_tab_columns_in_line
+    tests/test_tab_columns_in_line.c)
+
+add_executable(tcsv_test_tab_get_contents
+    tests/test_tab_get_contents.c)
+
 # Linking
 target_link_libraries(tinycsv_info_print
+    tinycsv)
+
+target_link_libraries(tinycsv_info_print_tab
     tinycsv)
 
 target_link_libraries(tinycsv_print_as_csv
@@ -47,13 +79,47 @@ target_link_libraries(tinycsv_replace_content
 target_link_libraries(tinycsv_new_document
     tinycsv)
 
+## Test executables
+
+target_link_libraries(tcsv_test_lines
+    tinycsv)
+
+target_link_libraries(tcsv_test_columns
+    tinycsv)
+
+target_link_libraries(tcsv_test_columns_in_line
+    tinycsv)
+
+target_link_libraries(tcsv_test_get_contents
+    tinycsv)
+
+target_link_libraries(tcsv_test_tab_lines
+    tinycsv)
+
+target_link_libraries(tcsv_test_tab_columns
+    tinycsv)
+
+target_link_libraries(tcsv_test_tab_columns_in_line
+    tinycsv)
+
+target_link_libraries(tcsv_test_tab_get_contents
+    tinycsv)
+
 # Install
 install(TARGETS tinycsv ARCHIVE DESTINATION lib)
 install_files("/include" .h
 	${CMAKE_SOURCE_DIR}/src/tinycsv.h)
 
 # Tests
-#add_test(NAME hexdump COMMAND hexdump_test)
+add_test(NAME tinycsv_lines COMMAND tcsv_test_lines ${CMAKE_SOURCE_DIR}/tests/res/example.csv)
+add_test(NAME tinycsv_columns COMMAND tcsv_test_columns ${CMAKE_SOURCE_DIR}/tests/res/example.csv)
+add_test(NAME tinycsv_columns_in_line COMMAND tcsv_test_columns_in_line ${CMAKE_SOURCE_DIR}/tests/res/example.csv)
+add_test(NAME tinycsv_get_contents COMMAND tcsv_test_get_contents ${CMAKE_SOURCE_DIR}/tests/res/example.csv)
+
+add_test(NAME tinycsv_tab_lines COMMAND tcsv_test_tab_lines ${CMAKE_SOURCE_DIR}/tests/res/example.tsv)
+add_test(NAME tinycsv_tab_columns COMMAND tcsv_test_tab_columns ${CMAKE_SOURCE_DIR}/tests/res/example.tsv)
+add_test(NAME tinycsv_tab_columns_in_line COMMAND tcsv_test_tab_columns_in_line ${CMAKE_SOURCE_DIR}/tests/res/example.tsv)
+add_test(NAME tinycsv_tab_get_contents COMMAND tcsv_test_tab_get_contents ${CMAKE_SOURCE_DIR}/tests/res/example.tsv)
 #add_test(NAME buffer COMMAND buffer_test)
 #add_test(NAME djb2_hash_on_string COMMAND hash_djb2_test)
 #add_test(NAME rot13_chicken COMMAND rot13_test)
