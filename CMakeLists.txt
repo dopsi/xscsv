@@ -128,6 +128,10 @@ target_link_libraries(xscsv_test_tab_columns_in_line
 target_link_libraries(xscsv_test_tab_get_contents
     xscsv)
 
+# Exports
+set(${PROJECT_NAME}_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/src
+	PARENT_SCOPE)
+
 # Install
 install(TARGETS xscsv ARCHIVE DESTINATION lib)
 install_files("/include" .h
