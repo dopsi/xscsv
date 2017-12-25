@@ -35,9 +35,9 @@ enable_testing()
 
 # Set project data
 project(xscsv)
-set(libdop_VERSION_MAJOR 1)
+set(libdop_VERSION_MAJOR 0)
 set(libdop_VERSION_MINOR 1)
-set(libdop_VERSION_REVISION 2)
+set(libdop_VERSION_REVISION 0)
 
 include_directories(BEFORE ${PROJECT_BINARY_DIR} ${PROJECT_SOURCE_DIR}/src)
 
