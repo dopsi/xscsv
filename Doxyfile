@@ -159,9 +159,9 @@ FILE_PATTERNS          = *.c \
                          *.ucf \
                          *.qsf
 RECURSIVE              = YES
-EXCLUDE                = doc/ build/
+EXCLUDE                = docs/ build/
 EXCLUDE_SYMLINKS       = NO
-EXCLUDE_PATTERNS       = doc/* \
+EXCLUDE_PATTERNS       = docs/* \
                          build/*
 EXCLUDE_SYMBOLS        =
 EXAMPLE_PATH           = examples
@@ -195,7 +195,7 @@ IGNORE_PREFIX          =
 # Configuration options related to the HTML output
 #---------------------------------------------------------------------------
 GENERATE_HTML          = YES
-HTML_OUTPUT            = doc
+HTML_OUTPUT            = docs
 HTML_FILE_EXTENSION    = .html
 HTML_HEADER            =
 HTML_FOOTER            =
