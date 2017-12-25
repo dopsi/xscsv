@@ -22,7 +22,7 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
-#include "tinycsv.h"
+#include "xscsv.h"
 
 #include <string.h>
 
@@ -31,37 +31,37 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    tinycsv_document_t *doc = tinycsv_open(argv[1], '\t');
+    xscsv_document_t *doc = xscsv_open(argv[1], '\t');
     
     if (!doc) {
         return -1;
     }
 
-    if (strcmp(tinycsv_get_content(doc, 0, 0), "Hello World!")) {
+    if (strcmp(xscsv_get_content(doc, 0, 0), "Hello World!")) {
         return 1;
     }
     
-    if (strcmp(tinycsv_get_content(doc, 0, 1), "1")) {
+    if (strcmp(xscsv_get_content(doc, 0, 1), "1")) {
         return 2;
     }
     
-    if (strcmp(tinycsv_get_content(doc, 0, 2), "1.25")) {
+    if (strcmp(xscsv_get_content(doc, 0, 2), "1.25")) {
         return 3;
     }
     
-    if (strcmp(tinycsv_get_content(doc, 1, 0), "12")) {
+    if (strcmp(xscsv_get_content(doc, 1, 0), "12")) {
         return 11;
     }
     
-    if (strcmp(tinycsv_get_content(doc, 1, 1), "24")) {
+    if (strcmp(xscsv_get_content(doc, 1, 1), "24")) {
         return 12;
     }
     
-    if (strcmp(tinycsv_get_content(doc, 1, 2), "36")) {
+    if (strcmp(xscsv_get_content(doc, 1, 2), "36")) {
         return 13;
     }
     
-    tinycsv_close(doc);
+    xscsv_close(doc);
 
     return 0;
 }

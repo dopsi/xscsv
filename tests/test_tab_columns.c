@@ -22,24 +22,24 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
-#include "tinycsv.h"
+#include "xscsv.h"
 
 int main(int argc, char **argv) {
     if (argc < 2) {
         return 1;
     }
 
-    tinycsv_document_t *doc = tinycsv_open(argv[1], '\t');
+    xscsv_document_t *doc = xscsv_open(argv[1], '\t');
     
     if (!doc) {
         return -1;
     }
 
-    if (tinycsv_columns(doc) != 3) {
+    if (xscsv_columns(doc) != 3) {
         return 1;
     }
     
-    tinycsv_close(doc);
+    xscsv_close(doc);
 
     return 0;
 }

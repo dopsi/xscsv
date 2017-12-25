@@ -22,7 +22,7 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
-#include "tinycsv.h"
+#include "xscsv.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,7 +36,7 @@ struct line_content {
     char **elements;
 };
 
-struct tinycsv_document {
+struct xscsv_document {
     size_t lines;
     size_t columns;
     struct line_content **lines_array;
@@ -120,29 +120,29 @@ static struct line_content* process_line(char *raw_line, char separator) {
     return l;
 }
 
-tinycsv_document_t* tinycsv_open(const char *filename, char separator) {
+xscsv_document_t* xscsv_open(const char *filename, char separator) {
     if (!filename) {
         return NULL;
     }
 
-    tinycsv_document_t *doc = NULL;
+    xscsv_document_t *doc = NULL;
     FILE *f = NULL;
     f = fopen(filename, "r");
     if (!f) {
         return NULL;
     }
-    doc = tinycsv_read(f, separator);
+    doc = xscsv_read(f, separator);
     fclose(f);
 
     return doc;
 }
 
-tinycsv_document_t* tinycsv_read(FILE *file, char separator) {
+xscsv_document_t* xscsv_read(FILE *file, char separator) {
     if (!file) {
         return NULL;
     }
 
-    tinycsv_document_t *doc = tinycsv_new(separator);
+    xscsv_document_t *doc = xscsv_new(separator);
 
     if (!doc) {
         return NULL;
@@ -172,8 +172,8 @@ tinycsv_document_t* tinycsv_read(FILE *file, char separator) {
     return doc;
 }
 
-tinycsv_document_t* tinycsv_new(char separator) {
-    tinycsv_document_t *doc = malloc(sizeof(tinycsv_document_t));
+xscsv_document_t* xscsv_new(char separator) {
+    xscsv_document_t *doc = malloc(sizeof(xscsv_document_t));
 
     if (!doc) {
         return NULL;
@@ -192,7 +192,7 @@ tinycsv_document_t* tinycsv_new(char separator) {
     return doc;
 }
 
-size_t tinycsv_lines(tinycsv_document_t *doc) {
+size_t xscsv_lines(xscsv_document_t *doc) {
     if (doc) {
         return doc->lines;
     } else {
@@ -200,7 +200,7 @@ size_t tinycsv_lines(tinycsv_document_t *doc) {
     }
 }
 
-size_t tinycsv_columns(tinycsv_document_t *doc) {
+size_t xscsv_columns(xscsv_document_t *doc) {
     if (doc) {
         return doc->columns;
     } else {
@@ -208,7 +208,7 @@ size_t tinycsv_columns(tinycsv_document_t *doc) {
     }
 }
 
-size_t tinycsv_columns_in_line(tinycsv_document_t *doc, size_t line) {
+size_t xscsv_columns_in_line(xscsv_document_t *doc, size_t line) {
     if (!doc) {
         return 0;
     }
@@ -220,7 +220,7 @@ size_t tinycsv_columns_in_line(tinycsv_document_t *doc, size_t line) {
     return 0;
 }
 
-const char* tinycsv_get_content(tinycsv_document_t *doc, size_t y, size_t x) {
+const char* xscsv_get_content(xscsv_document_t *doc, size_t y, size_t x) {
     if (!doc) {
         return NULL;
     }
@@ -232,7 +232,7 @@ const char* tinycsv_get_content(tinycsv_document_t *doc, size_t y, size_t x) {
     return NULL;
 }
 
-const char* tinycsv_set_content(tinycsv_document_t *doc, size_t y, size_t x, const char *new_content) {
+const char* xscsv_set_content(xscsv_document_t *doc, size_t y, size_t x, const char *new_content) {
     if (!doc || !new_content) {
         return NULL;
     }
@@ -293,7 +293,7 @@ const char* tinycsv_set_content(tinycsv_document_t *doc, size_t y, size_t x, con
     return doc->lines_array[y]->elements[x];
 }
 
-void tinycsv_close(tinycsv_document_t *doc) {
+void xscsv_close(xscsv_document_t *doc) {
     if (! doc ) {
         return;
     }

@@ -22,8 +22,8 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
-#ifndef _TINYCSV_H
-#define _TINYCSV_H
+#ifndef _XSCSV_H
+#define _XSCSV_H
 
 #include <stddef.h>
 #include <stdio.h>
@@ -31,10 +31,10 @@
 /**
  * @brief TinyCSV document handle
  *
- * For creation, use @ref tinycsv_open or @ref tinycsv_read.
- * This pointer must be destroyed using @ref tinycsv_close.
+ * For creation, use @ref xscsv_open or @ref xscsv_read.
+ * This pointer must be destroyed using @ref xscsv_close.
  **/
-typedef struct tinycsv_document tinycsv_document_t;
+typedef struct xscsv_document xscsv_document_t;
 
 /**
  * @brief Open a file giving it's filename
@@ -44,9 +44,9 @@ typedef struct tinycsv_document tinycsv_document_t;
  *
  * If filename is NULL, the returned document will be a NULL-pointer.
  *
- * @return a @ref tinycsv_document_t pointer, NULL on failure
+ * @return a @ref xscsv_document_t pointer, NULL on failure
  **/
-tinycsv_document_t* tinycsv_open(const char *filename, char separator);
+xscsv_document_t* xscsv_open(const char *filename, char separator);
 
 /**
  * @brief Read a file from a FILE pointer
@@ -56,51 +56,51 @@ tinycsv_document_t* tinycsv_open(const char *filename, char separator);
  *
  * If file is NULL, the returned document will be a NULL-pointer.
  *
- * @return a @ref tinycsv_document_t pointer, NULL on failure
+ * @return a @ref xscsv_document_t pointer, NULL on failure
  **/
-tinycsv_document_t* tinycsv_read(FILE *file, char separator);
+xscsv_document_t* xscsv_read(FILE *file, char separator);
 
 /**
- * @brief Create a new empty @ref tinycsv_document_t
+ * @brief Create a new empty @ref xscsv_document_t
  *
  * @param separator Field separator
  *
- * @return a @ref tinycsv_document_t pointer, NULL on failure
+ * @return a @ref xscsv_document_t pointer, NULL on failure
  **/
-tinycsv_document_t* tinycsv_new(char separator);
+xscsv_document_t* xscsv_new(char separator);
 
 /**
  * @brief Obtain the number of lines in the document
  *
- * @param doc a @ref tinycsv_document_t pointer
+ * @param doc a @ref xscsv_document_t pointer
  *
  * @return the number of lines in the document, 0 if doc is a NULL-pointer
  **/
-size_t tinycsv_lines(tinycsv_document_t *doc);
+size_t xscsv_lines(xscsv_document_t *doc);
 
 /**
  * @brief Obtain the number of columns in the document
  *
- * @param doc a @ref tinycsv_document_t pointer
+ * @param doc a @ref xscsv_document_t pointer
  *
  * @return the number of columns in the document, 0 if doc is a NULL-pointer
  **/
-size_t tinycsv_columns(tinycsv_document_t *doc);
+size_t xscsv_columns(xscsv_document_t *doc);
 
 /**
  * @brief Get the number of columns in a given line
  *
- * @param doc a @ref tinycsv_document_t pointer
+ * @param doc a @ref xscsv_document_t pointer
  * @param line the queried line
  *
  * @return the number of elements in the line, 0 in case of error
  */
-size_t tinycsv_columns_in_line(tinycsv_document_t *doc, size_t line);
+size_t xscsv_columns_in_line(xscsv_document_t *doc, size_t line);
 
 /**
  * @brief Get the document cell content
  *
- * @param doc a @ref tinycsv_document_t pointer
+ * @param doc a @ref xscsv_document_t pointer
  * @param x the horizontal coordinate of the cell
  * @param y the vertical coordinate of the cell
  *
@@ -112,10 +112,10 @@ size_t tinycsv_columns_in_line(tinycsv_document_t *doc, size_t line);
  *
  * @return a pointer on the content, NULL in case of failure
  */
-const char* tinycsv_get_content(tinycsv_document_t *doc, size_t y, size_t x);
+const char* xscsv_get_content(xscsv_document_t *doc, size_t y, size_t x);
 
 /**
- * @brief Insert content into a @ref tinycsv_document_t
+ * @brief Insert content into a @ref xscsv_document_t
  *
  * @param doc the document
  * @param x the horizontal coordinate of the cell
@@ -124,14 +124,14 @@ const char* tinycsv_get_content(tinycsv_document_t *doc, size_t y, size_t x);
  *
  * @return a pointer to the new content, NULL otherwise
  */
-const char* tinycsv_set_content(tinycsv_document_t *doc, size_t y, size_t x, const char *new_content);
+const char* xscsv_set_content(xscsv_document_t *doc, size_t y, size_t x, const char *new_content);
 
 /**
- * @brief Destroy a @ref tinycsv_document_t object
+ * @brief Destroy a @ref xscsv_document_t object
  *
- * @param doc a @ref tinycsv_document_t
+ * @param doc a @ref xscsv_document_t
  *
  * If doc is a NULL pointer, nothing happens.
  */
-void tinycsv_close(tinycsv_document_t *doc);
-#endif // _TINYCSV_H
+void xscsv_close(xscsv_document_t *doc);
+#endif // _XSCSV_H

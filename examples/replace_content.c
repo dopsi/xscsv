@@ -22,42 +22,42 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
-#include "tinycsv.h"
+#include "xscsv.h"
 
 #include <stdio.h>
 
 int main(int argc, char **argv) {
-    printf("tinycsv replace_content\n");
+    printf("xscsv replace_content\n");
 
     if (argc < 2) {
         return 1;
     }
 
-    tinycsv_document_t *doc = tinycsv_open(argv[1], ',');
+    xscsv_document_t *doc = xscsv_open(argv[1], ',');
     
     // TODO check for valid document
 
     size_t x, y, max_x, max_y;
-    max_x = tinycsv_columns(doc);
-    max_y = tinycsv_lines(doc);
+    max_x = xscsv_columns(doc);
+    max_y = xscsv_lines(doc);
 
     for (y = 0; y < max_y; ++y) {
         for (x = 0; x < max_x; ++x) {
-            printf("%s,", tinycsv_get_content(doc, y, x));
+            printf("%s,", xscsv_get_content(doc, y, x));
         }
         printf("\n");
     }
 
-    tinycsv_set_content(doc, 0, 0, "Bonjour, Monde!");
+    xscsv_set_content(doc, 0, 0, "Bonjour, Monde!");
 
     for (y = 0; y < max_y; ++y) {
         for (x = 0; x < max_x; ++x) {
-            printf("%s,", tinycsv_get_content(doc, y, x));
+            printf("%s,", xscsv_get_content(doc, y, x));
         }
         printf("\n");
     }
 
-    tinycsv_close(doc);
+    xscsv_close(doc);
 
     return 0;
 }

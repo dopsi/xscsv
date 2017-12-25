@@ -22,25 +22,25 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
-#include "tinycsv.h"
+#include "xscsv.h"
 
 #include <stdio.h>
 
 int main(int argc, char **argv) {
-    printf("tinycsv info print\n");
+    printf("xscsv info print\n");
 
     if (argc < 2) {
         return 1;
     }
 
-    tinycsv_document_t *doc = tinycsv_open(argv[1], '\t');
+    xscsv_document_t *doc = xscsv_open(argv[1], '\t');
     // TODO check for valid document
 
     printf("Document data\n");
-    printf("  ->lines = %u\n", tinycsv_lines(doc));
-    printf("  ->columns = %u\n", tinycsv_columns(doc));
-    printf("  ->columns_in_1st_line = %u\n", tinycsv_columns_in_line(doc, 0));
-    tinycsv_close(doc);
+    printf("  ->lines = %u\n", xscsv_lines(doc));
+    printf("  ->columns = %u\n", xscsv_columns(doc));
+    printf("  ->columns_in_1st_line = %u\n", xscsv_columns_in_line(doc, 0));
+    xscsv_close(doc);
 
     return 0;
 }
