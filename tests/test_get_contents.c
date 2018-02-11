@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    xscsv_document_t *doc = xscsv_open(argv[1], 0x0);
+    xscsv_document_t *doc = xscsv_open(argv[1], 0x0, 0x0);
     
     if (!doc) {
         return -1;

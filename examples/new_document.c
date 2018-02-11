@@ -29,7 +29,7 @@
 int main(int argc, char **argv) {
     printf("xscsv new_document\n");
 
-    xscsv_document_t *doc = xscsv_new(0x0);
+    xscsv_document_t *doc = xscsv_new(0x0, 0x0);
     
     // TODO check for valid document
 

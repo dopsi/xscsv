@@ -33,7 +33,7 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    xscsv_document_t *doc = xscsv_open(argv[1], ',');
+    xscsv_document_t *doc = xscsv_open(argv[1], ',', 0x0);
     
     // TODO check for valid document
 
