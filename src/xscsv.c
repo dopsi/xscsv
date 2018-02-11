@@ -26,6 +26,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
 
@@ -41,7 +42,61 @@ struct xscsv_document {
     size_t columns;
     struct line_content **lines_array;
     char separator;
+    char protector;
 };
+
+static bool strcontain(char c, const char* s) {
+    const char *pch = s;
+    while (*pch) {
+        if (c == *pch) {
+            return true;
+        }
+        pch ++;
+    }
+    return false;
+}
+
+static char* strtok_protect(char *s, const char* delim, char protection) {
+    static char *next_head = NULL;
+    char *head = NULL;
+    bool start_protection = false,
+         ignore_protection = false;
+
+    if (s) {
+        head = s;
+        next_head = s;
+    } else {
+        head = next_head;
+    }
+
+    while (head && *head && next_head) {
+        if (!*next_head) {
+            next_head = NULL;
+        } else {
+            if (*next_head == '\\') {
+                ignore_protection = true;
+            }
+
+            if (*next_head == protection && !ignore_protection) {
+                start_protection = !start_protection;
+            }
+
+            if (strcontain(*next_head, delim) && !start_protection) {
+                *next_head = 0x0;
+                next_head++;
+                break;
+            }
+        }
+
+        if (next_head) {
+            next_head++;
+        }
+
+        ignore_protection = false;
+    }
+
+    return head;
+}
 
 static size_t _strcharcount(const char *str, char c) {
     size_t cnt = 0;
@@ -79,7 +134,7 @@ static char *trimwhitespace(char *str) {
     return str;
 }
 
-static struct line_content* process_line(char *raw_line, char separator) {
+static struct line_content* process_line(char *raw_line, char separator, char protector) {
     size_t cnt = 0;
     size_t pch_len;
     char *pch = NULL;
@@ -101,7 +156,7 @@ static struct line_content* process_line(char *raw_line, char separator) {
         return NULL;
     }
 
-    pch = strtok(raw_line, sep);
+    pch = strtok_protect(raw_line, sep, protector);
 
     while (pch != NULL) {
         //if (pch[pch_len-1] == '\n') {
@@ -114,13 +169,13 @@ static struct line_content* process_line(char *raw_line, char separator) {
         l->elements[cnt] = calloc(pch_len+1, sizeof(char));
         strcpy(l->elements[cnt], pch);
         cnt ++;
-        pch = strtok (NULL, sep);
+        pch = strtok_protect(NULL, sep, protector);
     }
 
     return l;
 }
 
-xscsv_document_t* xscsv_open(const char *filename, char separator) {
+xscsv_document_t* xscsv_open(const char *filename, char separator, char protector) {
     if (!filename) {
         return NULL;
     }
@@ -131,18 +186,18 @@ xscsv_document_t* xscsv_open(const char *filename, char separator) {
     if (!f) {
         return NULL;
     }
-    doc = xscsv_read(f, separator);
+    doc = xscsv_read(f, separator, protector);
     fclose(f);
 
     return doc;
 }
 
-xscsv_document_t* xscsv_read(FILE *file, char separator) {
+xscsv_document_t* xscsv_read(FILE *file, char separator, char protector) {
     if (!file) {
         return NULL;
     }
 
-    xscsv_document_t *doc = xscsv_new(separator);
+    xscsv_document_t *doc = xscsv_new(separator, protector);
 
     if (!doc) {
         return NULL;
@@ -160,7 +215,9 @@ xscsv_document_t* xscsv_read(FILE *file, char separator) {
         }
         
         doc->lines_array = new_lines_array;
-        doc->lines_array[doc->lines] = process_line(line_buffer, doc->separator);
+        doc->lines_array[doc->lines] = process_line(line_buffer,
+                                                    doc->separator,
+                                                    doc->protector);
 
         if (doc->lines_array[doc->lines]->len > doc->columns) {
             doc->columns = doc->lines_array[doc->lines]->len;
@@ -172,7 +229,7 @@ xscsv_document_t* xscsv_read(FILE *file, char separator) {
     return doc;
 }
 
-xscsv_document_t* xscsv_new(char separator) {
+xscsv_document_t* xscsv_new(char separator, char protector) {
     xscsv_document_t *doc = malloc(sizeof(xscsv_document_t));
 
     if (!doc) {
@@ -182,6 +239,7 @@ xscsv_document_t* xscsv_new(char separator) {
     doc->lines = 0;
     doc->columns = 0;
     doc->lines_array = NULL;
+    doc->protector = protector;
 
     if (!separator) {
             doc->separator = ',';

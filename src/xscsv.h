@@ -41,33 +41,36 @@ typedef struct xscsv_document xscsv_document_t;
  *
  * @param filename Name of the file to be opened
  * @param separator Field separator
+ * @param protector Field protector
  *
  * If filename is NULL, the returned document will be a NULL-pointer.
  *
  * @return a @ref xscsv_document_t pointer, NULL on failure
  **/
-xscsv_document_t* xscsv_open(const char *filename, char separator);
+xscsv_document_t* xscsv_open(const char *filename, char separator, char protector);
 
 /**
  * @brief Read a file from a FILE pointer
  *
  * @param file FILE pointer
  * @param separator Field separator
+ * @param protector Field protector
  *
  * If file is NULL, the returned document will be a NULL-pointer.
  *
  * @return a @ref xscsv_document_t pointer, NULL on failure
  **/
-xscsv_document_t* xscsv_read(FILE *file, char separator);
+xscsv_document_t* xscsv_read(FILE *file, char separator, char protector);
 
 /**
  * @brief Create a new empty @ref xscsv_document_t
  *
  * @param separator Field separator
+ * @param protector Field protector
  *
  * @return a @ref xscsv_document_t pointer, NULL on failure
  **/
-xscsv_document_t* xscsv_new(char separator);
+xscsv_document_t* xscsv_new(char separator, char protector);
 
 /**
  * @brief Obtain the number of lines in the document
