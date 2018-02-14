@@ -1,5 +1,7 @@
 # xscsv
 
+[![Build Status](https://travis-ci.org/dopsi/xscsv.svg?branch=master)](https://travis-ci.org/dopsi/xscsv)
+
 ## Usage
 
 All functions and type definitions are located in @ref xscsv.h
