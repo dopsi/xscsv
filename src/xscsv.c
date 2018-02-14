@@ -32,19 +32,33 @@
 
 #define TINYCSV_INTERNAL_BUFFER 1024
 
+/**
+ * @brief Line of CSV data
+ */
 struct line_content {
-    size_t len;
-    char **elements;
+    size_t len; /**< Number of elements **/
+    char **elements; /**< String elements **/
 };
 
+/**
+ * @brief xsCSV document structure
+ */
 struct xscsv_document {
-    size_t lines;
-    size_t columns;
-    struct line_content **lines_array;
-    char separator;
-    char protector;
+    size_t lines; /**< Number of lines **/
+    size_t columns; /**< Length of the longest line **/
+    struct line_content **lines_array; /**< Array of lines **/
+    char separator; /**< Separator, comma by default **/
+    char protector; /**< Protector, set by the user **/
 };
 
+/**
+ * @brief Check if the string contains given character
+ *
+ * @param c Searched character
+ * @param s String to be searched
+ *
+ * @return C99 boolean true value if the character is present, false otherwise
+ */
 static bool strcontain(char c, const char* s) {
     const char *pch = s;
     while (*pch) {
@@ -56,6 +70,30 @@ static bool strcontain(char c, const char* s) {
     return false;
 }
 
+/**
+ * @brief strtok variation with substring protection
+ *
+ * This function is called in the same way `strtok` is. On the first call,
+ * it take the string to be split, the delimiters and the protection character
+ * as arguments. On the following call, `s` must be `NULL` and the tokens will be
+ * returned until there is no token left, at which point it returns `NULL`;
+ *
+ * @code{.c}
+ * char *pch = strtok_protect("a,\"b,c\",d\0", ',', '"'); // returns 'a'
+ *
+ * while (pch != NULL) {
+ *     pch = strtok_protect(NULL, sep, protector);        // return '"b,c"'
+ *                                                        //        'd'
+ *                                                        // and    NULL
+ * }
+ * @endcode
+ *
+ * @param s string to split
+ * @param delim list of delimiters
+ * @param protection protection character
+ *
+ * @return the current token
+ */
 static char* strtok_protect(char *s, const char* delim, char protection) {
     static char *next_head = NULL;
     char *head = NULL;
@@ -98,6 +136,14 @@ static char* strtok_protect(char *s, const char* delim, char protection) {
     return head;
 }
 
+/**
+ * @brief Count the occurences of a character in a string
+ *
+ * @param str null-terminated string
+ * @param c character to count in the string
+ *
+ * @return the number of occurences of `c` in `str`
+ */
 static size_t _strcharcount(const char *str, char c) {
     size_t cnt = 0;
 

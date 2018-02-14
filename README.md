@@ -13,20 +13,20 @@ is opened with @ref xscsv_open. The `'\0'` parameter
 
 ```c
 const char filename[] = "example.csv";
-xscsv_document_t *doc = xscsv_open(filename, '\0');
+xscsv_document_t *doc = xscsv_open(filename, '\0', '"');
 ```
 
 If you already have a `FILE*` pointer, this file can be read with
 @ref xscsv_read.
 
 ```c
-xscsv_document_t *doc = xscsv_read(file_pointer, '\0');
+xscsv_document_t *doc = xscsv_read(file_pointer, '\0', '"');
 ```
 
 To create an empty document, use @ref xscsv_new.
 
 ```c
-xscsv_document_t *doc = xscsv_new('\0');
+xscsv_document_t *doc = xscsv_new('\0', '"');
 ```
 
 From this point, all three pointers are functionnaly equal.
