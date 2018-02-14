@@ -3,8 +3,8 @@ var indexSectionsWithContent =
   0: "_ceilmnprstx",
   1: "lx",
   2: "inprtx",
-  3: "_mptx",
-  4: "cels",
+  3: "_mpstx",
+  4: "celps",
   5: "x",
   6: "t",
   7: "x"
